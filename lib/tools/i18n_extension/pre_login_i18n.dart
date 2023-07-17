@@ -9,6 +9,10 @@ extension Localization on String {
       {
        "pt_br" : "Compre o que você precisar do conforto de sua casa.",
        "en_us" : "Buy what you need from the comfort of your home."
+      }+
+      {
+        "pt_br" : "Cadastrar-se",
+        "en_us" : "Sign Up"
       };
 
 
