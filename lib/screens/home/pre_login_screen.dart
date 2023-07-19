@@ -14,7 +14,7 @@ class PreLoginScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TopTitles(title: "BEM-VINDO", subtitle: "Compre o que você precisar do conforto de sua casa."),
+           TopTitles(title: "BEM-VINDO".i18n, subtitle: "Compre o que você precisar do conforto de sua casa.".i18n),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             child: Image.asset('assets/images/pre_login.png'),
@@ -38,8 +38,8 @@ class PreLoginScreen extends StatelessWidget {
             ],
           ),
           18.hg,
-          MainButton(onPressed: () => Navigator.of(context).pushNamed('login'), title: 'Login'),
-          MainButton(onPressed: (){}, title: 'Cadastrar-se'.i18n)
+          MainButton(onPressed: () => Navigator.of(context).pushNamed('/login'), title: 'Login'),
+          MainButton(onPressed: () => Navigator.of(context).pushNamed('/signup'), title: 'Cadastrar-se'.i18n)
         ],
       ),
     );
