@@ -8,6 +8,10 @@ class CategoryCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12),
+      color: Colors.white,
+      elevation: 4,
+      surfaceTintColor: Colors.white,
+      shadowColor: Colors.grey,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Image.network(
