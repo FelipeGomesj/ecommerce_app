@@ -1,10 +1,14 @@
+import 'package:ecommerce_app/constants/constants.dart';
+import 'package:ecommerce_app/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ecommerce_app/widgets/buttons/main_button.dart';
-import 'package:ecommerce_app/widgets/custom_text_field.dart';
+import 'package:ecommerce_app/widgets/components/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../configs/theme_config.dart';
 import '../../../tools/custom_sized_box.dart';
 import '../../../tools/i18n_extension/login_screen_i18n.dart';
-import 'package:ecommerce_app/widgets/top_titles.dart';
+import 'package:ecommerce_app/widgets/components/top_titles.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final List<FocusNode> _focusNode = [FocusNode(), FocusNode()];
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
   @override
   void initState() {
     for (FocusNode node in _focusNode) {
@@ -44,13 +50,21 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TopTitles(title: 'Login', subtitle: 'Bem-vindo de volta.'.i18n, arrowBack: true),
+              TopTitles(title: 'Login', subtitle: 'Bem-vindo de volta.'.i18n, arrowBack: false),
               32.hg,
-              CustomTextField(focusNode: _focusNode[0], prefixIcon: const Icon(Icons.email_outlined), hintText: 'E-mail'),
+              CustomTextField(focusNode: _focusNode[0], prefixIcon: const Icon(Icons.email_outlined), hintText: 'E-mail', controller: _email),
               16.hg,
-              CustomTextField(focusNode: _focusNode[1], prefixIcon: const Icon(Icons.password_outlined), hintText: 'Senha'.i18n, passwordField: true),
+              CustomTextField(focusNode: _focusNode[1], prefixIcon:  Icon(Icons.password_outlined, color: _focusNode[1].hasFocus ? Config.themeData.primaryColor : Config.themeData.disabledColor), hintText: 'Senha'.i18n, passwordField: true, controller: _password,),
               16.hg,
-              MainButton(onPressed: () {}, title: "Login"),
+              MainButton(onPressed: () async{
+                bool isValidate = loginValidation(email: _email.text, password: _password.text);
+                if(isValidate){
+                 bool isLogined = await FirebaseAuthHelper.instance.login(email: _email.text, password: _password.text, context: context);
+                 if(isLogined){
+                   Navigator.of(context).popAndPushNamed('/home');
+                 }
+                }
+              }, title: "Login"),
               16.hg,
               Center(
                 child: Column(

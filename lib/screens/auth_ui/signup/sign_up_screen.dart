@@ -1,11 +1,13 @@
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:ecommerce_app/widgets/buttons/main_button.dart';
-import 'package:ecommerce_app/widgets/top_titles.dart';
+import 'package:ecommerce_app/widgets/components/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../configs/theme_config.dart';
+import '../../../constants/constants.dart';
+import '../../../firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import '../../../tools/i18n_extension/signup_screen_i18n.dart';
-import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/components/custom_text_field.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -21,6 +23,11 @@ class _SignupScreenState extends State<SignupScreen> {
     FocusNode(),
     FocusNode()
   ];
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -49,19 +56,19 @@ class _SignupScreenState extends State<SignupScreen> {
               CustomTextField(
                   prefixIcon: const Icon(Icons.person_outline),
                   hintText: "Nome".i18n,
-                  focusNode: _focusNode[0]),
+                  focusNode: _focusNode[0], controller: _nameController),
               16.hg,
               CustomTextField(
                   prefixIcon: const Icon(Icons.email_outlined),
                   hintText: "E-mail",
                   focusNode: _focusNode[1],
-                  emailField: true),
+                  emailField: true, controller: _emailController),
               16.hg,
               CustomTextField(
                   prefixIcon: const Icon(Icons.phone_outlined),
                   hintText: "Número (com DDD)".i18n,
                   focusNode: _focusNode[2],
-                  numberField: true),
+                  numberField: true, controller: _phoneNumberController),
               16.hg,
               CustomTextField(
                   prefixIcon: Icon(
@@ -72,9 +79,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   hintText: "Senha".i18n,
                   focusNode: _focusNode[3],
-                  passwordField: true),
+                  passwordField: true, controller: _passwordController,),
               16.hg,
-              MainButton(onPressed: () {}, title: "Criar Conta".i18n),
+              MainButton(onPressed: () async{
+                bool isValidate = signUpValidation(email: _emailController.text, password: _passwordController.text, name: _nameController.text, phoneNumber: _phoneNumberController.text);
+                if(isValidate){
+                  bool isLogined = await FirebaseAuthHelper.instance.signUp(email: _emailController.text, password: _passwordController.text, context: context);
+                  if(isLogined){
+                    print('Navegar para home');
+                  }
+                }
+
+              }, title: "Criar Conta".i18n),
               16.hg,
               Center(
                 child: Column(

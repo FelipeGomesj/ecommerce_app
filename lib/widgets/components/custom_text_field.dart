@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../configs/theme_config.dart';
+import '../../configs/theme_config.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField({super.key, required  this.focusNode, required this.prefixIcon, required this.hintText, this.passwordField = false, this.numberField = false, this.emailField = false});
+  const CustomTextField({super.key, required this.controller, required  this.focusNode, required this.prefixIcon, required this.hintText, this.passwordField = false, this.numberField = false, this.emailField = false});
   final FocusNode focusNode;
   final Icon prefixIcon;
   final String hintText;
   final bool passwordField;
   final bool numberField;
   final bool emailField;
-
+  final TextEditingController controller;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -24,6 +24,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         builder: (BuildContext context, bool value, Widget? child) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: TextField(
+            controller: widget.controller,
             focusNode: widget.focusNode,
             obscureText: _showPassword.value,
             decoration: InputDecoration(
@@ -67,6 +68,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     ) : widget.numberField == true ? Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
+        controller: widget.controller,
         focusNode: widget.focusNode,
         keyboardType: TextInputType.phone,
         maxLength: 11,
@@ -92,6 +94,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     ) : widget.emailField ? Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
+        controller: widget.controller,
         focusNode: widget.focusNode,
         decoration: InputDecoration(
             filled: true,
@@ -114,6 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     ) : Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
+        controller: widget.controller,
         focusNode: widget.focusNode,
         decoration: InputDecoration(
             filled: true,
