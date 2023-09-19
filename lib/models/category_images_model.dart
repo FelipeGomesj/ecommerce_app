@@ -1,16 +1,18 @@
-class CategoryImagesModel {
- // final String id;
-  final List<String> images;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+class CategoryImagesModel {
+  final String id;
+  final String? image;
   CategoryImagesModel({
-    //required this.id,
-    required this.images,
+    required this.id,
+    required this.image,
   });
 
-  factory CategoryImagesModel.fromMap(Map<String, dynamic> map) {
+  factory CategoryImagesModel.fromDocument(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return CategoryImagesModel(
-      //id: map['id'] ?? '',
-      images: List<String>.from(map['images'] ?? []),
+      id: doc.id,
+      image: data['image'] ?? ''
     );
   }
 }
