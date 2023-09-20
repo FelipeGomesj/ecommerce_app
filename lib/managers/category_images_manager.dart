@@ -36,7 +36,7 @@ class CategoryImagesManager extends ChangeNotifier {
   Future<void> loadCategoryImages() async {
     try {
       final QuerySnapshot querySnapshot = await firestore.collection('/category_images').get();
-        _categoryImagesList = await querySnapshot.docs.map((doc) => CategoryImagesModel.fromDocument(doc)).toList();
+      _categoryImagesList =  querySnapshot.docs.map((doc) => CategoryImagesModel.fromDocument(doc)).toList();
       notifyListeners();
     } catch (error) {
       print("Error loading category images: $error");

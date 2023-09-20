@@ -4,6 +4,7 @@ import 'package:ecommerce_app/tools/i18n_extension/home_screen_i18n.dart';
 import 'package:ecommerce_app/widgets/components/category_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../managers/product_manager.dart';
 import '../../widgets/components/product_grid.dart';
 import '../../widgets/components/top_titles.dart';
 
@@ -34,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final categoryImagesManager = Provider.of<CategoryImagesManager>(context);
     final categoryImagesList = categoryImagesManager.categoryImagesList;
+    final _productManager = Provider.of<ProductManager>(context);
+    final _productList = _productManager.products;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -42,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TopTitles(title: 'Storia', subtitle: ''),
+              const TopTitles(title: 'Storia Foods', subtitle: ''),
               16.hg,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -81,30 +84,59 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 120,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 4),
-                  itemCount: categoryImagesList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final imageUrl = categoryImagesList.map((e) => e.image).toList();
-                    return CategoryCards(imageUrl[index]!, (){
-                      print("image: $index");
-                    });
-
-                  },
-                ),
-              ),
-                  ]),
+                child: Row(children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 120,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
+                      itemCount: categoryImagesList.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final imageUrl =
+                            categoryImagesList.map((e) => e.image).toList();
+                        return CategoryCards(imageUrl[index]!, () {
+                          print("categoria: ${categoryImagesList[index].category}");
+                        });
+                      },
+                    ),
+                  ),
+                ]),
               ),
               TopTitles(title: "Mais vendidos".i18n, subtitle: ''),
               /*Best Sellers*/
-              const ProductGrid(title: 'Banana Prata', urlImage: 'https://frutasbrasilsul.com.br/wp-content/uploads/banana-nanica.png', price: 2.5,)
+              //const ProductGrid(title: 'Banana Prata', urlImage: 'https://frutasbrasilsul.com.br/wp-content/uploads/banana-nanica.png', price: 2.5,)
+              _productList.isEmpty
+                  ?  Center(
+                      child: Text(
+                        "Desculpe, ainda não há produtos aqui... :(".i18n,
+                        style: const TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 18,
+
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height / 2,
+                      child: GridView.builder(
+                        padding: const EdgeInsets.only(
+                            bottom: 60, left: 8, right: 8, top: 0),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 0.9
+
+                        ),
+                        itemCount: _productList.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return ProductGrid(productModel: _productList[index]);
+                        },
+                      ),
+                    )
             ],
           ),
         ),

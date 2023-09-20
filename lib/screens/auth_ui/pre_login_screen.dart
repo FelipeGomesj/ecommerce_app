@@ -3,7 +3,7 @@ import 'package:ecommerce_app/widgets/buttons/main_button.dart';
 import 'package:ecommerce_app/widgets/components/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../tools/custom_sized_box.dart';
+import '../../tools/custom_sized_box.dart';
 
 class PreLoginScreen extends StatelessWidget {
   const PreLoginScreen({Key? key}) : super(key: key);

@@ -12,6 +12,12 @@ void showMessage(String message){
     fontSize: 16
   );
 }
+
+String firebaseLineWrapping(String string){
+  string = string.replaceAll('\\n', "\n");
+  String formatedString = string;
+  return formatedString;
+}
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 showLoaderDialog(BuildContext context){
   AlertDialog alertDialog = AlertDialog(
