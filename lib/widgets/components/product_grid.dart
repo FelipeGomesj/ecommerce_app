@@ -72,7 +72,7 @@ class ProductGrid extends StatelessWidget {
                       children: <Widget>[
                         RichText(
                           text: TextSpan(
-                              text: "O que deseja fazer com ",
+                              text: "O que deseja fazer com ".i18n,
                               style: const TextStyle(
                                   color: Colors.black54, fontSize: 18),
                               children: [
@@ -91,9 +91,9 @@ class ProductGrid extends StatelessWidget {
                                 print('Adicionado no carrinho');
                                 Navigator.pop(context);
                               },
-                              child: const Text(
-                                'Adicionar p/\ncarrinho.',
-                                style: TextStyle(color: Colors.red,fontSize: 18),
+                              child:  Text(
+                                'Adicionar p/\ncarrinho'.i18n,
+                                style: const TextStyle(color: Colors.red,fontSize: 18),
                               ),
                             ),
                             TextButton(
@@ -101,9 +101,9 @@ class ProductGrid extends StatelessWidget {
                                 print('Navegar até o pagamento');
                                 Navigator.pop(context);
                               },
-                              child: const Text(
-                                'Ir para o \npagamento',
-                                style: TextStyle(color: Colors.red, fontSize: 18),
+                              child:  Text(
+                                'Ir para o \npagamento'.i18n,
+                                style: const TextStyle(color: Colors.red, fontSize: 18),
                               ),
                             )
                           ],
