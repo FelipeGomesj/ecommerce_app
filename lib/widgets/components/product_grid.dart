@@ -2,7 +2,6 @@ import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/product_model.dart';
-import '../../screens/auth_ui/pre_login_screen.dart';
 import '../../screens/products/products_details_screen.dart';
 import '../../tools/i18n_extension/product_grid_i18n.dart';
 

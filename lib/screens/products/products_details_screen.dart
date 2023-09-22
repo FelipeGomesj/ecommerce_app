@@ -23,6 +23,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
   Widget build(BuildContext context) {
     //widget.productModel.description = widget.productModel.description!.replaceAll('\\n', "\n");
     //print(widget.productModel.description);
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -86,20 +87,26 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                       child: Icon(Icons.favorite),
                     ),
                   ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height / 2.4,
-                    right: MediaQuery.of(context).size.width / 2.5,
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: _carouselIndexNotifier,
-                      builder: (context, index, child) => widget.productModel.images!.length > 1 ?AnimatedSmoothIndicator(
-                        activeIndex: _carouselIndexNotifier.value,
-                        count: widget.productModel.images!.length,
-                        onDotClicked: (index) => _carouselController.animateToPage(index),
-                        effect: const WormEffect(
-                            activeDotColor: Colors.red),
-                      ) : Container(),
+                  //Alinhamento dos indicadores de imagens, o positioned.fill considera o tamanho inteiro do widget pai,
+                  //que neste caso é o Stack lá da linha 50.
+                  Positioned.fill(
+                    child: Container(
+                      //color: Colors.blue,
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 32),
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: _carouselIndexNotifier,
+                          builder: (context, index, child) => widget.productModel.images!.length > 1 ?AnimatedSmoothIndicator(
+                            activeIndex: _carouselIndexNotifier.value,
+                            count: widget.productModel.images!.length,
+                            onDotClicked: (index) => _carouselController.animateToPage(index),
+                            effect: const WormEffect(
+                                activeDotColor: Colors.red),
+                          ) : Container(),
+                        ),
+                      ),
                     ),
-                    //child: buildIndicator(),
                   ),
                 ],
               ),

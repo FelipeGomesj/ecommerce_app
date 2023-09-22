@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 class TopTitles extends StatelessWidget {
   final String title, subtitle;
   final bool? arrowBack;
-  const TopTitles({super.key, required this.title, required this.subtitle, this.arrowBack = false});
+  final bool? safeKToolbarHeight;
+  const TopTitles({super.key, required this.title, required this.subtitle, this.arrowBack = false, this.safeKToolbarHeight = true});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: kToolbarHeight, //Alinha a altura segura para qualquer celular, para ui não ficar por cima de câmera ou outra coisa que comprometa a mesma
+         SizedBox(
+          height: safeKToolbarHeight == true ?  kToolbarHeight : 10, // kToolbarHeight Alinha a altura segura para qualquer celular, para ui não ficar por cima de câmera ou outra coisa que comprometa a mesma
         ),
        if(arrowBack == true)
          Padding(
@@ -22,6 +23,7 @@ class TopTitles extends StatelessWidget {
                 FocusScope.of(context).unfocus();
                 await Future.delayed(const Duration(milliseconds: 100));
                 Navigator.of(context).pop();
+                //Navigator.pop;
              },
              child: const Icon(Icons.arrow_back, size: 26,),),
          ),
