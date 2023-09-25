@@ -18,12 +18,12 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
   final ValueNotifier<int> _countNotifier = ValueNotifier<int>(1);
   final CarouselController _carouselController = CarouselController();
   final ValueNotifier<int>  _carouselIndexNotifier  = ValueNotifier<int>(0);
-
   @override
   Widget build(BuildContext context) {
     //widget.productModel.description = widget.productModel.description!.replaceAll('\\n', "\n");
     //print(widget.productModel.description);
-    double _height = MediaQuery.of(context).size.height;
+    //double _height = MediaQuery.of(context).size.height;
+    final ValueNotifier<bool> _isFavorite = ValueNotifier<bool>(widget.productModel.isFavorite);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -78,14 +78,19 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: InkWell(
-                      onTap: () => print(
-                          'Favoritar produto: ${widget.productModel.name}'),
-                      child: Icon(Icons.favorite),
-                    ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _isFavorite,
+                    builder: (_, __, ___) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      child: InkWell(
+                        onTap: () {
+                          _isFavorite.value = !_isFavorite.value;
+                          widget.productModel.isFavorite = _isFavorite.value;
+                        },
+                        child: _isFavorite.value ?  const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
+                      ),
+                    )
                   ),
                   //Alinhamento dos indicadores de imagens, o positioned.fill considera o tamanho inteiro do widget pai,
                   //que neste caso é o Stack lá da linha 50.
@@ -158,7 +163,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                       padding: const EdgeInsets.only(left: 22, right: 8),
                       child: SizedBox(
                         width: 46,
-                        child: ElevatedButton(
+                        child: _countNotifier.value > 1 ? ElevatedButton(
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
@@ -167,8 +172,16 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                             ),
                           ),
                           onPressed: () {
+                            if(_countNotifier.value <= 1){
+                              _countNotifier.value += 1;
+                            }
                             _countNotifier.value -= 1;
-                            print( _countNotifier.value);
+                            //print(_countNotifier.value);
+                          },
+                          onLongPress: (){
+                            while(_countNotifier.value > 1){
+                              _countNotifier.value -= 1;
+                            }
                           },
                           child: const Center(
                             child: Text(
@@ -179,7 +192,28 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                                   fontSize: 28),
                             ),
                           ),
-                        ),
+                        ) : ElevatedButton(
+                          style: ButtonStyle(
+                            shadowColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                              overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red.withAlpha(180))
+                          ),
+                          onPressed: () => (null),
+                          child:  Center(
+                            child: Text(
+                              "-",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white.withAlpha(80),
+                                  fontSize: 28),
+                            ),
+                          ),
+                        ) ,
                       ),
                     ),
                     Text(
@@ -213,70 +247,69 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> {
                   ],
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16, top: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 22, right: 8),
-                      child: SizedBox(
-                        width: 46,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            _countNotifier.value -= 1;
-                            print( _countNotifier.value);
-                          },
-                          child: const Center(
-                            child: Text(
-                              "-",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 28),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "${_countNotifier.value}",
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: SizedBox(
-                        width: 46,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                          onPressed: () => _countNotifier.value += 1,
-                          child: const Text(
-                            "+",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 26),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              // child: Padding(
+              //   padding: const EdgeInsets.only(right: 16, top: 16),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Padding(
+              //         padding: const EdgeInsets.only(left: 22, right: 8),
+              //         child: SizedBox(
+              //           width: 46,
+              //           child: ElevatedButton(
+              //             style: ButtonStyle(
+              //               shape: MaterialStateProperty.all(
+              //                 RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(20),
+              //                 ),
+              //               ),
+              //             ),
+              //             onPressed: () {
+              //               _countNotifier.value -= 1;
+              //             },
+              //             child: const Center(
+              //               child: Text(
+              //                 "-",
+              //                 style: TextStyle(
+              //                     fontWeight: FontWeight.bold,
+              //                     color: Colors.white,
+              //                     fontSize: 28),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       Text(
+              //         "${_countNotifier.value}",
+              //         style: const TextStyle(
+              //             fontSize: 16, fontWeight: FontWeight.w500),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.only(left: 8),
+              //         child: SizedBox(
+              //           width: 46,
+              //           child: ElevatedButton(
+              //             style: ButtonStyle(
+              //               shape: MaterialStateProperty.all(
+              //                 RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(20),
+              //                 ),
+              //               ),
+              //             ),
+              //             onPressed: () => _countNotifier.value += 1,
+              //             child: const Text(
+              //               "+",
+              //               style: TextStyle(
+              //                   fontWeight: FontWeight.bold,
+              //                   color: Colors.white,
+              //                   fontSize: 26),
+              //             ),
+              //           ),
+              //         ),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
