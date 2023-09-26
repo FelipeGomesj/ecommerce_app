@@ -19,4 +19,16 @@ class ProductManager extends ChangeNotifier{
       print("Error loading all Products: $error");
     }
   }
+  List<ProductModel> listCategoryProducts(String category){
+    // final _productManager = Provider.of<ProductManager>(context);
+    // final _productList = _productManager.products;
+    List<ProductModel> productCategoryList = [];
+    for(ProductModel product in products) {
+      if(product.type == category){
+        productCategoryList.add(product);
+      }
+    }
+    return productCategoryList;
+  }
+
 }

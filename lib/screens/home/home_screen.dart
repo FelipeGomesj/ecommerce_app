@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../managers/product_manager.dart';
 import '../../widgets/components/product_grid.dart';
 import '../../widgets/components/top_titles.dart';
+import '../products/category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final imageUrl =
                             categoryImagesList.map((e) => e.image).toList();
                         return CategoryCards(imageUrl[index]!, () {
-                          print("categoria: ${categoryImagesList[index].category}");
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => CategoryScreen(categoryImagesList[index])));
                         });
                       },
                     ),
