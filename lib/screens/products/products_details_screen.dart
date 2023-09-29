@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/models/product_model.dart';
+import 'package:ecommerce_app/screens/shopping_cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../configs/customColors.dart';
@@ -37,7 +38,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> with Tick
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: InkWell(
-              onTap: () => print('abrir carrinho...'),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CartScreen()) ),
               child: const Icon(
                 Icons.shopping_cart_outlined,
                 size: 28,
@@ -57,7 +58,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> with Tick
                 alignment: Alignment.topRight,
                 children: [
                   Card(
-                    color: const Color.fromARGB(255, 217, 217, 217),
+                    color: CustomColors.backgroundColorImage,
                     child: CarouselSlider.builder(
                       carouselController: _carouselController,
                       options: CarouselOptions(
@@ -114,7 +115,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> with Tick
                         padding: const EdgeInsets.only(bottom: 32),
                         child: ValueListenableBuilder<int>(
                           valueListenable: _carouselIndexNotifier,
-                          builder: (context, index, child) => widget.productModel.images!.length > 1 ?AnimatedSmoothIndicator(
+                          builder: (context, index, child) => widget.productModel.images!.length > 1 ? AnimatedSmoothIndicator(
                             activeIndex: _carouselIndexNotifier.value,
                             count: widget.productModel.images!.length,
                             onDotClicked: (index) => _carouselController.animateToPage(index),
@@ -323,8 +324,8 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen> with Tick
     } else {
       final position = _doubleTapDetails!.localPosition;
       _scaleController.value = Matrix4.identity()
-        ..translate(-position.dx * 2, -position.dy * 2)
-        ..scale(3.0);
+        ..translate(-position.dx, -position.dy ) //2
+        ..scale(2.5); //3.0
     }
   }
   void _resetScale() {
