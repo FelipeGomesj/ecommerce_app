@@ -1,14 +1,14 @@
-import 'package:ecommerce_app/screens/auth_ui/login/login_screen.dart';
-import 'package:ecommerce_app/screens/auth_ui/signup/sign_up_screen.dart';
-import 'package:ecommerce_app/screens/home/home_screen.dart';
-import 'package:ecommerce_app/screens/auth_ui/pre_login_screen.dart';
+import 'package:ecommerce_app/views/auth_ui/login/login_view.dart';
+import 'package:ecommerce_app/views/auth_ui/signup/sign_up_view.dart';
+import 'package:ecommerce_app/views/home/home_view.dart';
+import 'package:ecommerce_app/views/auth_ui/pre_login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
 import 'configs/theme_config.dart';
-import 'managers/category_images_manager.dart';
-import 'managers/product_manager.dart';
+import 'controllers/category_images_controller.dart';
+import 'controllers/product_controller.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,11 +1,11 @@
 import 'package:ecommerce_app/configs/customColors.dart';
 import 'package:ecommerce_app/models/category_images_model.dart';
 import 'package:ecommerce_app/models/product_model.dart';
-import 'package:ecommerce_app/screens/shopping_cart/cart_screen.dart';
+import 'package:ecommerce_app/views/shopping_cart/cart_view.dart';
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../managers/product_manager.dart';
+import '../../controllers/product_controller.dart';
 import '../../widgets/components/product_grid.dart';
 
 class CategoryScreen extends StatefulWidget {

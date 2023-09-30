@@ -1,13 +1,13 @@
-import 'package:ecommerce_app/managers/category_images_manager.dart';
+import 'package:ecommerce_app/controllers/category_images_controller.dart';
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:ecommerce_app/tools/i18n_extension/home_screen_i18n.dart';
 import 'package:ecommerce_app/widgets/components/category_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../managers/product_manager.dart';
+import '../../controllers/product_controller.dart';
 import '../../widgets/components/product_grid.dart';
 import '../../widgets/components/top_titles.dart';
-import '../products/category_screen.dart';
+import '../products/category_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
