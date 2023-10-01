@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
-  const MainButton({required this.onPressed, required this.title, super.key});
+  const MainButton({required this.onPressed, required this.title, this.color = Colors.red, super.key});
 
   final Function onPressed;
   final String title;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,9 @@ class MainButton extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(color: Colors.white),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateColor.resolveWith((states) => color),
           ),
         ),
       ),

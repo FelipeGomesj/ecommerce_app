@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/customColors.dart';
@@ -233,6 +234,12 @@ class _CartScreenState extends State<CartScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MainButton(onPressed: () => print("ir para o pagamento..."), title: "PROCEED TO CHECKOUT"),
+        ],
       ),
     );
   }
