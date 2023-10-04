@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/product_model.dart';
 
-class ProductManager extends ChangeNotifier{
+class ProductController extends ChangeNotifier{
   List<ProductModel> _products = [];
   List<ProductModel>  get  products => _products;
-  ProductManager(){
+  ProductController(){
     _loadAllProducts();
   }
   Future<void> _loadAllProducts() async{

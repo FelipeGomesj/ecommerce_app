@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../constants/constants.dart';
 import '../../models/product_model.dart';
 import '../../views/products/products_details_view.dart';
 import '../../tools/i18n_extension/product_grid_i18n.dart';
@@ -12,9 +13,7 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedPrice =
-        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2)
-            .format(productModel.price);
+    //String formattedPrice = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2).format(productModel.price);
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -46,11 +45,10 @@ class ProductGrid extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
-                //"R\$ ${price.toString().replaceAll(".", ",")}"
               ],
             ),
             Text(
-              formattedPrice,
+              formatPrice(productModel.price!),
               style: const TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.normal,
@@ -116,13 +114,6 @@ class ProductGrid extends StatelessWidget {
                 color: Colors.red,
                 width: 100,
                 height: 30,
-                // decoration: BoxDecoration(
-                //     border: Border.all(
-                //       width: 1.5,
-                //       //color: Colors.red,
-                //     )
-                // ),
-
                 child: Center(
                   child: Text(
                     "COMPRAR".i18n,

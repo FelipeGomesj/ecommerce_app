@@ -3,6 +3,7 @@ import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:ecommerce_app/tools/i18n_extension/constants_i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 void showMessage(String message){
   Fluttertoast.showToast(
@@ -17,6 +18,11 @@ String firebaseLineWrapping(String string){
   string = string.replaceAll('\\n', "\n");
   String formatedString = string;
   return formatedString;
+}
+
+String formatPrice (num price){
+  String formattedPrice = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2).format(price);
+  return formattedPrice;
 }
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 showLoaderDialog(BuildContext context){

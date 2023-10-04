@@ -24,8 +24,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     _category = widget.categoryImagesModel.category!;
     double _height = MediaQuery.of(context).size.height;
-    return Consumer<ProductManager>(
-      builder: (BuildContext context, productManager, Widget? child) =>
+    return Consumer<ProductController>(
+      builder: (BuildContext context, productController, Widget? child) =>
           Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -57,7 +57,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: InkWell(
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const CartScreen(),
+                    builder: (_) =>  const  CartScreen(),
                   ),
                 ),
                 child: const Icon(
@@ -69,7 +69,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             )
           ],
         ),
-        body: productManager.listCategoryProducts(_category).isEmpty
+        body: productController.listCategoryProducts(_category).isEmpty
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -98,11 +98,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   //childAspectRatio: 0.8
                 ),
                 itemCount:
-                    productManager.listCategoryProducts(_category).length,
+                productController.listCategoryProducts(_category).length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   List<ProductModel> categoryProducts =
-                      productManager.listCategoryProducts(_category);
+                  productController.listCategoryProducts(_category);
                   return ProductGrid(productModel: categoryProducts[index]);
                 },
               ),

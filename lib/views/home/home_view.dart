@@ -36,14 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final categoryImagesManager = Provider.of<CategoryImagesManager>(context);
     final categoryImagesList = categoryImagesManager.categoryImagesList;
-    final _productManager = Provider.of<ProductManager>(context);
+    final _productManager = Provider.of<ProductController>(context);
     final _productList = _productManager.products;
 
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
-    print(_height);
-    print(_width);
+    //print(_height);
+    //print(_width);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
