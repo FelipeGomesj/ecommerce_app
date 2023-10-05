@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'configs/theme_config.dart';
 import 'controllers/category_images_controller.dart';
 import 'controllers/product_controller.dart';
+import 'controllers/user_controller.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ProductController(),
           lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserController(),
+          lazy:false
         )
       ],
       child: I18n(
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: Config.themeData,
-          home:  const HomeScreen(),
+          home:  const SignupScreen(),
           onGenerateRoute: (settings){
             switch(settings.name){
               case '/pre_login':
