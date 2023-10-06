@@ -97,8 +97,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     //     print('Navegar para home');
                     //   }
                     // }
-                   //TODO já está logando e signup funcionando, agora criar a função para signout e fazer a lógica na home para botão de deslogar ou de fazer login
-                   print(userController.userModel.name);
                     if(_formKey.currentState!.validate()){
                       _formKey.currentState?.save();
                       await userController.signUp(userModel: UserModel(

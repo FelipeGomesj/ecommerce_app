@@ -100,6 +100,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextFormField(
         controller: widget.controller,
         focusNode: widget.focusNode,
+        validator: (email) {
+          if(email!.isEmpty){
+            print('email vazio');
+          }
+        },
         onSaved:(email) => _userModel.email = email,
         decoration: InputDecoration(
             filled: true,

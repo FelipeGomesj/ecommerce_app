@@ -17,7 +17,7 @@ class UserController extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   bool _loading = false;
-  bool _userLoaded = false;
+  bool _loaded = false;
 
   bool get loading => _loading;
   set loading(bool value){
@@ -34,6 +34,18 @@ class UserController extends ChangeNotifier {
     }
 }
 
+  Future<void> signIn({required UserModel userModel, required Function onFail, required Function onSuccess}) async{
+    loading = true;
+    try{
+      await firebaseAuth.signInWithEmailAndPassword(email: userModel.email!, password: userModel.password!);
+      await _loadCurrentUser();
+      onSuccess();
+    }on FirebaseAuthException catch(e){
+      onFail(getErrorString(e.code));
+    }
+    loading = false;
+    _loaded = true;
+  }
   Future<void> signUp({required UserModel userModel, required Function onFail, required Function onSuccess}) async{
     loading = true;
     try{
@@ -45,7 +57,7 @@ class UserController extends ChangeNotifier {
     }on FirebaseAuthException catch(e){
       await onFail(getErrorString(e.code));
     }
-    loading = false; //carregando
-    _userLoaded = true; //carregado
+    loading = false; //carregando...
+    _loaded = true; //carregado.
   }
 }
