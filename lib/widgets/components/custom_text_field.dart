@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../configs/theme_config.dart';
+import '../../models/user_model.dart';
 
 class CustomTextField extends StatefulWidget {
   const CustomTextField({super.key, required this.controller, required  this.focusNode, required this.prefixIcon, required this.hintText, this.passwordField = false, this.numberField = false, this.emailField = false});
@@ -17,16 +18,18 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   final ValueNotifier<bool> _showPassword = ValueNotifier<bool>(true);
+  final UserModel _userModel = UserModel();
   @override
   Widget build(BuildContext context) {
     return widget.passwordField == true ? ValueListenableBuilder(
         valueListenable: _showPassword,
         builder: (BuildContext context, bool value, Widget? child) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: TextField(
+          child: TextFormField(
             controller: widget.controller,
             focusNode: widget.focusNode,
             obscureText: _showPassword.value,
+            onSaved: (pass) => _userModel.password = pass,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: widget.focusNode.hasFocus
@@ -67,11 +70,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         )
     ) : widget.numberField == true ? Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
+      child: TextFormField(
         controller: widget.controller,
         focusNode: widget.focusNode,
         keyboardType: TextInputType.phone,
         maxLength: 11,
+        onSaved: (number) => _userModel.cellPhone = number,
         decoration: InputDecoration(
             filled: true,
             fillColor: widget.focusNode.hasFocus ? Colors.white : Config.themeData.inputDecorationTheme.fillColor,
@@ -93,9 +97,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
     ) : widget.emailField ? Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
+      child: TextFormField(
         controller: widget.controller,
         focusNode: widget.focusNode,
+        onSaved:(email) => _userModel.email = email,
         decoration: InputDecoration(
             filled: true,
             fillColor: widget.focusNode.hasFocus ? Colors.white : Config.themeData.inputDecorationTheme.fillColor,
@@ -114,11 +119,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
             )
         ),
       ),
+      //NameField
     ) : Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
+      child: TextFormField(
         controller: widget.controller,
         focusNode: widget.focusNode,
+        onSaved:(name) => _userModel.name = name,
         decoration: InputDecoration(
             filled: true,
             fillColor: widget.focusNode.hasFocus ? Colors.white : Config.themeData.inputDecorationTheme.fillColor,
