@@ -102,7 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusNode: widget.focusNode,
         validator: (email) {
           if(email!.isEmpty){
-            print('email vazio');
+            print('email vazios');
           }
         },
         onSaved:(email) => _userModel.email = email,
