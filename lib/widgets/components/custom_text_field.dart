@@ -76,6 +76,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
         keyboardType: TextInputType.phone,
         maxLength: 11,
         onSaved: (number) => _userModel.cellPhone = number,
+          onChanged: (text) {
+            RegExp digitRegex = RegExp(r'^[0-9]*$');
+            if (text.isNotEmpty) {
+              if (!digitRegex.hasMatch(text)) {
+                widget.controller.clear();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Por favor, preencha com apenas números de 0 à 9, sem letras, símbolos ou pontuações.", style: TextStyle(
+                        fontSize: 18
+                    ),),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
         decoration: InputDecoration(
             filled: true,
             fillColor: widget.focusNode.hasFocus ? Colors.white : Config.themeData.inputDecorationTheme.fillColor,
@@ -100,11 +116,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextFormField(
         controller: widget.controller,
         focusNode: widget.focusNode,
-        validator: (email) {
-          if(email!.isEmpty){
-            print('email vazios');
-          }
-        },
+        // validator: (email) {
+        //   if(email!.isEmpty){
+        //     print('email vazios');
+        //   }
+        // },
         onSaved:(email) => _userModel.email = email,
         decoration: InputDecoration(
             filled: true,

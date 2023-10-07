@@ -97,6 +97,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     //     print('Navegar para home');
                     //   }
                     // }
+                   print("userController.userModel: ${userController.userModel?.id}");
                     if(_formKey.currentState!.validate()){
                       _formKey.currentState?.save();
                       await userController.signUp(userModel: UserModel(
@@ -104,14 +105,38 @@ class _SignupScreenState extends State<SignupScreen> {
                         cellPhone: _phoneNumberController.text,
                         email: _emailController.text,
                         password: _passwordController.text
-                      ), onFail:  (error)  => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Falha ao tentar: $error", style: const TextStyle(
-                            fontSize: 18
-                          ),),
-                          backgroundColor: Colors.red,
-                        ),
-                      ) ,
+                      ), onFail:  (error) {
+                        if(_nameController.text.isEmpty || _phoneNumberController.text.isEmpty || _emailController.text.isEmpty  || _passwordController.text.isEmpty){
+                          return ScaffoldMessenger.of(context).showSnackBar(
+                             const SnackBar(
+                              content: Text("Nenhum campo pode estar vazio", style: TextStyle(
+                                  fontSize: 18
+                              ),),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                        if(_phoneNumberController.text.length < 10){
+                          return ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("O número de contato precisa ser um telefone ou celular válido com (DDD) sem símbolos, exemplo: 00999999999", style: TextStyle(
+                                  fontSize: 18
+                              ),),
+                              duration: Duration(seconds: 4),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Falha ao tentar: $error", style: const TextStyle(
+                                fontSize: 18
+                            ),),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } ,
                          onSuccess: () => Navigator.of(context).popAndPushNamed('/home'));
                     }
                   }, title: "Criar Conta".i18n),

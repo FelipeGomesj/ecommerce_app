@@ -2,6 +2,8 @@ import 'package:ecommerce_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/user_model.dart';
+
 class FirebaseAuthHelper {
   static FirebaseAuthHelper instance = FirebaseAuthHelper();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -31,6 +33,11 @@ class FirebaseAuthHelper {
       showMessage(error.code.toString());
       return false;
     }
+  }
+
+  Future<bool> isLogined({required UserModel userModel, required BuildContext context}) async{
+    bool userIsLogged = await FirebaseAuthHelper.instance.signUp(email: userModel.email!, password: userModel.password!, context: context);
+    return userIsLogged;
   }
 
 }

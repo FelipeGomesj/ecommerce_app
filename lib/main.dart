@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: Config.themeData,
-          home:  const SignupScreen(),
+          home:  const HomeScreen(),
           onGenerateRoute: (settings){
             switch(settings.name){
               case '/pre_login':

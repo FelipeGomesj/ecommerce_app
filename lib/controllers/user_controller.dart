@@ -11,7 +11,7 @@ class UserController extends ChangeNotifier {
     _loadCurrentUser();
   }
 
-  UserModel userModel = UserModel();
+  UserModel? userModel = UserModel();
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -27,11 +27,19 @@ class UserController extends ChangeNotifier {
 
   Future<void> _loadCurrentUser({User? firebaseUser}) async{
     final User? firebaseCurrentUser = firebaseUser ?? firebaseAuth.currentUser;
-
+    // print("firebaseCurrentUser?.uid: ${firebaseCurrentUser?.uid}");
+    // print("firebaseCurrentUser?.email: ${firebaseCurrentUser?.email}");
+    // print("userModel.email: ${userModel.email}");
+    // if(userModel.email !=  firebaseCurrentUser?.email){
+    //   firebaseCurrentUser?.reload();
+    //   return;
+    // }
     if(firebaseCurrentUser != null){
       final DocumentSnapshot documentUser = await firestore.collection('users').doc(firebaseCurrentUser.uid).get();
       userModel = UserModel.fromDocument(documentUser);
     }
+    print("userModel.email após carregar: ${userModel?.email}");
+    print("firebaseCurrentUser.email: ${firebaseCurrentUser?.email} ");
 }
 
   Future<void> signIn({required UserModel userModel, required Function onFail, required Function onSuccess}) async{
@@ -59,5 +67,17 @@ class UserController extends ChangeNotifier {
     }
     loading = false; //carregando...
     _loaded = true; //carregado.
+  }
+
+  Future<void> signOutUser({required UserModel? userModel})async{
+    _loading = true;
+    try{
+      await firebaseAuth.signOut();
+      userModel =  null;
+    }catch(e){
+      print('UserController SignOutUser: deu ruim: $e');
+    }
+    _loading = false;
+    notifyListeners();
   }
 }
