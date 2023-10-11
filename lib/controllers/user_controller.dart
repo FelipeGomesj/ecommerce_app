@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/controllers/shopping_cart_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../firebase_helper/firebase_errors.dart';
 import '../models/user_model.dart';
 
@@ -12,6 +12,7 @@ class UserController extends ChangeNotifier {
   }
 
   UserModel? userModel = UserModel();
+  ShoppingCartController shoppingCartController = ShoppingCartController();
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -27,16 +28,10 @@ class UserController extends ChangeNotifier {
 
   Future<void> _loadCurrentUser({User? firebaseUser}) async{
     final User? firebaseCurrentUser = firebaseUser ?? firebaseAuth.currentUser;
-    // print("firebaseCurrentUser?.uid: ${firebaseCurrentUser?.uid}");
-    // print("firebaseCurrentUser?.email: ${firebaseCurrentUser?.email}");
-    // print("userModel.email: ${userModel.email}");
-    // if(userModel.email !=  firebaseCurrentUser?.email){
-    //   firebaseCurrentUser?.reload();
-    //   return;
-    // }
     if(firebaseCurrentUser != null){
       final DocumentSnapshot documentUser = await firestore.collection('users').doc(firebaseCurrentUser.uid).get();
       userModel = UserModel.fromDocument(documentUser);
+      shoppingCartController.loadShoppingCart(userModel: userModel);
     }
     print("userModel.email após carregar: ${userModel?.email}");
     print("firebaseCurrentUser.email: ${firebaseCurrentUser?.email} ");
@@ -74,9 +69,11 @@ class UserController extends ChangeNotifier {
     try{
       await firebaseAuth.signOut();
       userModel =  null;
+      shoppingCartController.resetCart();
     }catch(e){
       print('UserController SignOutUser: deu ruim: $e');
     }
+    _loaded = false;
     _loading = false;
     notifyListeners();
   }

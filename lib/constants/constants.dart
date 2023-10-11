@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:ecommerce_app/tools/i18n_extension/constants_i18n.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ String formatPrice (num price){
   return formattedPrice;
 }
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
+final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 showLoaderDialog(BuildContext context){
   AlertDialog alertDialog = AlertDialog(
     content: Builder(builder:(context){

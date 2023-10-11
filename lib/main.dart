@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/controllers/shopping_cart_controller.dart';
 import 'package:ecommerce_app/views/auth_ui/login/login_view.dart';
 import 'package:ecommerce_app/views/auth_ui/signup/sign_up_view.dart';
 import 'package:ecommerce_app/views/home/home_view.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => UserController(),
           lazy:false
+        ),
+        ChangeNotifierProvider(create: (_) => ShoppingCartController(),
+          lazy: true,
         )
       ],
       child: I18n(

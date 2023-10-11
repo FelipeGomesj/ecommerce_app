@@ -8,9 +8,9 @@ class ProductController extends ChangeNotifier{
   List<ProductModel> _products = [];
   List<ProductModel>  get  products => _products;
   ProductController(){
-    _loadAllProducts();
+    loadAllProducts();
   }
-  Future<void> _loadAllProducts() async{
+  Future<void> loadAllProducts() async{
     try{
       final QuerySnapshot querySnapshot = await firestore.collection('/products').get();
       _products = querySnapshot.docs.map((doc) => ProductModel.fromDocument(doc)).toList();

@@ -1,3 +1,5 @@
+import 'package:ecommerce_app/controllers/shopping_cart_controller.dart';
+import 'package:ecommerce_app/controllers/user_controller.dart';
 import 'package:ecommerce_app/widgets/buttons/main_button.dart';
 import 'package:ecommerce_app/widgets/components/cart_card.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-    return Consumer<ProductController>(builder: (context, productController, child) => Scaffold(
+    return Consumer3<ProductController, ShoppingCartController, UserController>(builder: (BuildContext context, productController, shoppingCartController, userController, Widget?  child) => Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
         actions: [
@@ -59,7 +61,10 @@ class _CartScreenState extends State<CartScreen> {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          MainButton(onPressed: () => print("ir para o pagamento..."), title: "PROCEED TO CHECKOUT"),
+          MainButton(onPressed: () async{
+            print('teste');
+            shoppingCartController.loadShoppingCart(userModel: userController.userModel);
+          } , title: "PROCEED TO CHECKOUT"),
         ],
       ),
     ),
