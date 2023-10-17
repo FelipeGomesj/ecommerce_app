@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../constants/constants.dart';
+import '../models/product_model.dart';
 import '../models/shopping_cart_model.dart';
 import '../models/user_model.dart';
 
@@ -42,8 +43,37 @@ class ShoppingCartController extends ChangeNotifier {
         print('_shoppingCartList.length: ${_shoppingCartList.length}');
       }
     }
+    print("shoppingCartList: ${shoppingCartList.length}");
     notifyListeners();
   }
+
+  void addProductToCart({required ProductModel product, required int amount}){
+    bool alreadyInCart = false;
+    try{
+      _shoppingCartList.firstWhere((item) {
+        if(product.id == item.productId){
+          item.amount = item.amount! + amount;
+          alreadyInCart = true;
+          return alreadyInCart;
+        }else{
+          alreadyInCart = false;
+          return alreadyInCart;
+        }
+      });
+    }catch(e){
+      //print(e);
+    }
+    if(!alreadyInCart){
+      final ShoppingCartModel shoppingCartItem = ShoppingCartModel(id: null, productId: product.id, unitProductPrice: product.price, amount: amount);
+      _shoppingCartList.add(shoppingCartItem);
+    }
+  }
+
+  Future<void> removeProductToCart({required String productId}) async {
+    _shoppingCartList.removeWhere((item) => item.productId == productId);
+    notifyListeners();
+  }
+
   void resetCart() {
   _shoppingCartList = [];
   notifyListeners();

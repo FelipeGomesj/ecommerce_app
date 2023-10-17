@@ -18,11 +18,10 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final ValueNotifier<int> _countNotifier = ValueNotifier<int>(1);
 
-  final List<ProductModel> productList = [];
 
   @override
   Widget build(BuildContext context) {
-    double _height = MediaQuery.of(context).size.height;
+    //double _height = MediaQuery.of(context).size.height;
     return Consumer3<ProductController, ShoppingCartController, UserController>(builder: (BuildContext context, productController, shoppingCartController, userController, Widget?  child) => Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
@@ -52,11 +51,21 @@ class _CartScreenState extends State<CartScreen> {
         elevation: 6,
       ),
       body: ListView.builder(
-        itemCount: 1, //productList.length,
+        itemCount: shoppingCartController.shoppingCartList.length, //productList.length,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         //itemExtent: 200,
-        itemBuilder: (context, index) => CartCard(product: productController.products.first,//productList[index],
-            amount: 1),
+          itemBuilder: (context, index) {
+            final cartItem = shoppingCartController.shoppingCartList[index];
+            // Encontre o produto correspondente na lista de produtos
+            final product = productController.products.firstWhere(
+                  (product) => product.id == cartItem.productId,
+              orElse: () => ProductModel(images: null, name: null,  price: null, id: null, description: null, type: null), // Você pode definir um valor padrão aqui, caso o produto não seja encontrado
+            );
+            return CartCard(
+              shoppingCart: cartItem,
+              product: product,
+            );
+          },
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,

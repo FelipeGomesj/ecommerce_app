@@ -11,7 +11,7 @@ class ShoppingCartModel {
   final String? id;
   final String? productId;
   final num? unitProductPrice;
-  final int? amount;
+  int? amount;
 
   factory ShoppingCartModel.fromDocument(DocumentSnapshot doc) {
     return ShoppingCartModel(
