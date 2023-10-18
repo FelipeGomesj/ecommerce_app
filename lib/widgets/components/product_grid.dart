@@ -15,11 +15,22 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //String formattedPrice = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2).format(productModel.price);
-    return Consumer<ShoppingCartController>(builder:(_, shoppingCartController, __) => 
-       GestureDetector(
+    return Consumer<ShoppingCartController>(
+      builder: (_, shoppingCartController, __) => GestureDetector(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ProductsDetailsScreen(productModel: productModel),
+            builder: (_) {
+              try{
+                return ProductsDetailsScreen(
+                  productModel: productModel,
+                  shoppingCart: shoppingCartController.shoppingCartList.firstWhere((item) => item.productId == productModel.id),
+                );
+
+              }catch(e){
+                return ProductsDetailsScreen(productModel: productModel);
+
+              }
+            }
           ),
         ),
         child: Card(
@@ -87,12 +98,14 @@ class ProductGrid extends StatelessWidget {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  shoppingCartController.addProductToCart(product: productModel, amount: 1);
+                                  shoppingCartController.addProductToCart(
+                                      product: productModel, amount: 1);
                                   Navigator.pop(context);
                                 },
-                                child:  Text(
+                                child: Text(
                                   'Adicionar p/\ncarrinho'.i18n,
-                                  style: const TextStyle(color: Colors.red,fontSize: 18),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 18),
                                 ),
                               ),
                               TextButton(
@@ -100,9 +113,10 @@ class ProductGrid extends StatelessWidget {
                                   print('Navegar até o pagamento');
                                   Navigator.pop(context);
                                 },
-                                child:  Text(
+                                child: Text(
                                   'Ir para o \npagamento'.i18n,
-                                  style: const TextStyle(color: Colors.red, fontSize: 18),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 18),
                                 ),
                               )
                             ],

@@ -18,7 +18,6 @@ class ShoppingCartController extends ChangeNotifier {
     shoppingCartList = value;
     notifyListeners();
   }
-
   Future<void> loadShoppingCart({UserModel? userModel}) async {
     if (userModel?.id != null && userModel?.id != '') {
       try {
@@ -52,7 +51,7 @@ class ShoppingCartController extends ChangeNotifier {
     try{
       _shoppingCartList.firstWhere((item) {
         if(product.id == item.productId){
-          item.amount = item.amount! + amount;
+          item.amount = item.amount! + 1;
           alreadyInCart = true;
           return alreadyInCart;
         }else{
@@ -70,7 +69,18 @@ class ShoppingCartController extends ChangeNotifier {
   }
 
   Future<void> removeProductToCart({required String productId}) async {
-    _shoppingCartList.removeWhere((item) => item.productId == productId);
+    _shoppingCartList.removeWhere((item){
+      if(item.productId == productId && item.amount == 1){
+        print('removeu o produto pq só tinha 1 unidade dele');
+        return true;
+      }else{
+        if(item.productId == productId){
+          item.amount = item.amount! - 1;
+        }
+        print('decrementou uma unidade');
+        return false;
+      }
+    });
     notifyListeners();
   }
 

@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/constants/constants.dart';
 import 'package:ecommerce_app/models/product_model.dart';
+import 'package:ecommerce_app/views/products/products_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ class CartCard extends StatefulWidget {
       : super(key: key);
   final ShoppingCartModel shoppingCart;
   final ProductModel product;
+
   @override
   State<CartCard> createState() => _CartCardState();
 }
@@ -20,12 +22,13 @@ class _CartCardState extends State<CartCard> {
   final ValueNotifier<int> _countNotifier = ValueNotifier<int>(0);
   final ValueNotifier<num> _productPriceSum = ValueNotifier<num>(0);
 
+
   @override
   Widget build(BuildContext context) {
     _countNotifier.value = widget.shoppingCart.amount!;
     _productPriceSum.value = widget.shoppingCart.unitProductPrice!;
-    return Consumer<ShoppingCartController>(builder: (_, shoppingCartController,__) =>
-      Container(
+    return Consumer<ShoppingCartController>(
+      builder: (_, shoppingCartController, __) => Container(
         margin: const EdgeInsets.only(bottom: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -34,18 +37,35 @@ class _CartCardState extends State<CartCard> {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                height: 140,
-                decoration: BoxDecoration(
-                  color: CustomColors.backgroundColorImage,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) {
+                        try{
+                          return ProductsDetailsScreen(
+                            productModel: widget.product,
+                            shoppingCart: shoppingCartController.shoppingCartList.firstWhere((item) => item.productId == widget.product.id),
+                          );
+
+                        }catch(e){
+                          return ProductsDetailsScreen(productModel: widget.product);
+                        }
+                      }
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Image.network(widget.product.images!.first),
+                child: Container(
+                  height: 140,
+                  decoration: BoxDecoration(
+                    color: CustomColors.backgroundColorImage,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Image.network(widget.product.images!.first),
+                  ),
                 ),
               ),
             ),
@@ -95,12 +115,20 @@ class _CartCardState extends State<CartCard> {
                                               _countNotifier.value -= 1;
                                               _productPriceSum.value -=
                                                   widget.product.price!;
+                                              shoppingCartController.removeProductToCart(productId: widget.product.id!);
+                                              shoppingCartController.notifyListeners();
                                             },
                                             onLongPress: () {
                                               while (_countNotifier.value > 1) {
                                                 _countNotifier.value -= 1;
                                                 _productPriceSum.value -=
                                                     widget.product.price!;
+                                                shoppingCartController
+                                                    .removeProductToCart(
+                                                        productId:
+                                                            widget.product.id!);
+                                                shoppingCartController
+                                                    .notifyListeners();
                                               }
                                             },
                                             child: const Padding(
@@ -115,79 +143,84 @@ class _CartCardState extends State<CartCard> {
                                               ),
                                             ),
                                           )
-                                    //botão remover item
+                                        //botão remover item
                                         : ElevatedButton(
                                             style: ButtonStyle(
-                                              shadowColor:
-                                                  MaterialStateColor.resolveWith(
-                                                      (states) =>
-                                                          Colors.transparent),
-                                              overlayColor:
-                                                  MaterialStateColor.resolveWith(
-                                                      (states) =>
-                                                          Colors.transparent),
+                                              shadowColor: MaterialStateColor
+                                                  .resolveWith((states) =>
+                                                      Colors.transparent),
+                                              overlayColor: MaterialStateColor
+                                                  .resolveWith((states) =>
+                                                      Colors.transparent),
                                               shape: MaterialStateProperty.all(
                                                 RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                 ),
                                               ),
-                                              backgroundColor: MaterialStateColor
-                                                  //Colors.red.withAlpha(180)
-                                                  .resolveWith(
-                                                      (states) => Colors.grey),
+                                              backgroundColor:
+                                                  MaterialStateColor
+                                                      //Colors.red.withAlpha(180)
+                                                      .resolveWith((states) =>
+                                                          Colors.grey),
                                             ),
                                             onPressed: () => showDialog(
                                               context: context,
                                               builder: (context) => Center(
                                                 child: Card(
                                                   color: Colors.white,
-                                                  margin:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 16),
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 16),
                                                   child: Padding(
                                                     padding: const EdgeInsets
-                                                        .symmetric(vertical: 24),
+                                                            .symmetric(
+                                                        vertical: 24),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
                                                       children: [
                                                         RichText(
-                                                          text:
-                                                              TextSpan(children: [
-                                                            const TextSpan(
-                                                              text: "Remover ",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            TextSpan(
-                                                              text: widget
-                                                                  .product.name,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: CustomColors
-                                                                      .orangeTitle,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            const TextSpan(
-                                                              text:
-                                                                  " do carrinho ? ",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 18),
-                                                            ),
-                                                          ]),
+                                                          text: TextSpan(
+                                                              children: [
+                                                                const TextSpan(
+                                                                  text:
+                                                                      "Remover ",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          18),
+                                                                ),
+                                                                TextSpan(
+                                                                  text: widget
+                                                                      .product
+                                                                      .name,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: CustomColors
+                                                                          .orangeTitle,
+                                                                      fontSize:
+                                                                          18),
+                                                                ),
+                                                                const TextSpan(
+                                                                  text:
+                                                                      " do carrinho ? ",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          18),
+                                                                ),
+                                                              ]),
                                                         ),
                                                         Padding(
                                                           padding:
@@ -200,16 +233,25 @@ class _CartCardState extends State<CartCard> {
                                                                     .spaceAround,
                                                             children: [
                                                               TextButton(
-                                                                onPressed: () async {
-                                                                  await shoppingCartController.removeProductToCart(productId: widget.product.id!);
-                                                                  print('Removendo ${widget.product.name}');
-                                                                  Navigator.of(context).pop();
+                                                                onPressed:
+                                                                    () async {
+                                                                  await shoppingCartController.removeProductToCart(
+                                                                      productId: widget
+                                                                          .product
+                                                                          .id!);
+                                                                  print(
+                                                                      'Removendo ${widget.product.name}');
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
                                                                 },
-                                                                child: const Text(
+                                                                child:
+                                                                    const Text(
                                                                   "Remover",
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize: 18,
+                                                                    fontSize:
+                                                                        18,
                                                                     color: Colors
                                                                         .red,
                                                                     decoration:
@@ -230,7 +272,8 @@ class _CartCardState extends State<CartCard> {
                                                                   "Voltar para o carrinho",
                                                                   style:
                                                                       TextStyle(
-                                                                    fontSize: 18,
+                                                                    fontSize:
+                                                                        18,
                                                                     color: Colors
                                                                         .grey
                                                                         .shade700,
@@ -267,7 +310,8 @@ class _CartCardState extends State<CartCard> {
                                 Text(
                                   "${_countNotifier.value}",
                                   style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w500),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8),
@@ -285,11 +329,18 @@ class _CartCardState extends State<CartCard> {
                                       ),
                                       onPressed: () {
                                         _countNotifier.value += 1;
-                                        _productPriceSum.value += widget.product.price!;
+                                        _productPriceSum.value =
+                                            widget.product.price!;
+                                        //print('_countNotifier.value: ${_countNotifier.value}');
+                                        shoppingCartController.addProductToCart(product: widget.product, amount: _countNotifier.value);
+                                        shoppingCartController.notifyListeners();
                                       },
                                       child: const Padding(
                                         padding: EdgeInsets.only(
-                                            left: 0, right: 0, top: 0, bottom: 0),
+                                            left: 0,
+                                            right: 0,
+                                            top: 0,
+                                            bottom: 0),
                                         child: Text(
                                           "+",
                                           style: TextStyle(
@@ -306,8 +357,8 @@ class _CartCardState extends State<CartCard> {
                           ),
                           widget.product.isFavorite == false
                               ? InkWell(
-                                  onTap: () =>
-                                      print('adicionar produto para o favorito'),
+                                  onTap: () => print(
+                                      'adicionar produto para o favorito'),
                                   child: const Text(
                                     "Add to favorite",
                                     style: TextStyle(color: Colors.red),
@@ -316,12 +367,9 @@ class _CartCardState extends State<CartCard> {
                               : Container(),
                         ],
                       ),
-                      ValueListenableBuilder<num>(
-                        valueListenable: _productPriceSum,
-                        builder: (_, __, ___) => Text(
-                          formatPrice(_productPriceSum.value),
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
+                      Text(
+                        formatPrice(widget.shoppingCart.totalProductPrice),
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),

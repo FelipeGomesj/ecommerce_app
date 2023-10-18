@@ -12,7 +12,7 @@ class ShoppingCartModel {
   final String? productId;
   final num? unitProductPrice;
   int? amount;
-
+  num get totalProductPrice => (unitProductPrice ?? 0) * (amount ?? 0);
   factory ShoppingCartModel.fromDocument(DocumentSnapshot doc) {
     return ShoppingCartModel(
       id: doc.id,
