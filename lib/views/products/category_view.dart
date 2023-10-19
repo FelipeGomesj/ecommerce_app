@@ -57,7 +57,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               child: InkWell(
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) =>  const  CartScreen(),
+                    builder: (_) =>  const  CartView(),
                   ),
                 ),
                 child: const Icon(

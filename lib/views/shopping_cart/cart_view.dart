@@ -8,19 +8,23 @@ import '../../configs/customColors.dart';
 import '../../controllers/product_controller.dart';
 import '../../models/product_model.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
 
+
+class CartView extends StatefulWidget {
+  const CartView({Key? key, this.onReturnAction}) : super(key: key);
+
+  //VoidCallBack é exatamente como se estivesse passando o tipo Function, porém, aparentemente ele é usado para funções que não
+  //retornam nenhum tipo de valor e também não recebem nenhum tipo de argumento/parâmetro, por isso o nome VoidCallback/chamada vazia de volta
+  /*Em resumo, o VoidCallback é um tipo de função que representa uma ação sem argumentos nem valor de retorno,
+   e é útil para definir ações que podem ser executadas em resposta a eventos ou ações do usuário.*/
+  final VoidCallback? onReturnAction;
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartView> createState() => _CartViewState();
 }
 
-class _CartScreenState extends State<CartScreen> {
-  final ValueNotifier<int> _countNotifier = ValueNotifier<int>(1);
-
-
+class _CartViewState extends State<CartView> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     //double _height = MediaQuery.of(context).size.height;
     return Consumer3<ProductController, ShoppingCartController, UserController>(builder: (BuildContext context, productController, shoppingCartController, userController, Widget?  child) => Scaffold(
       appBar: AppBar(
@@ -50,28 +54,39 @@ class _CartScreenState extends State<CartScreen> {
         surfaceTintColor: Colors.black,
         elevation: 6,
       ),
-      body: ListView.builder(
-        itemCount: shoppingCartController.shoppingCartList.length, //productList.length,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        //itemExtent: 200,
-          itemBuilder: (context, index) {
-            final cartItem = shoppingCartController.shoppingCartList[index];
-            // Encontre o produto correspondente na lista de produtos
-            final product = productController.products.firstWhere(
-                  (product) => product.id == cartItem.productId,
-              orElse: () => ProductModel(images: null, name: null,  price: null, id: null, description: null, type: null), // Você pode definir um valor padrão aqui, caso o produto não seja encontrado
-            );
-            return CartCard(
-              shoppingCart: cartItem,
-              product: product,
-            );
-          },
+      //WillPopScope permite eu inserir comandos quando o usuário arrastar o dedo da direita para esquerda
+      //com o recurso nativo do android para voltar as telas, ou seja, dar pop()
+      body: WillPopScope(
+        onWillPop:() async {
+          if (widget.onReturnAction != null) {
+            print("cart_view: widget.onReturnAction");
+            widget.onReturnAction!();
+          }
+          return true;
+        },
+        child: ListView.builder(
+          itemCount: shoppingCartController.shoppingCartList.length, //productList.length,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          //itemExtent: 200,
+            itemBuilder: (context, index) {
+              final cartItem = shoppingCartController.shoppingCartList[index];
+              // Encontrando o produto correspondente na lista de produtos
+              final product = productController.products.firstWhere(
+                    (product) => product.id == cartItem.productId,
+                orElse: () => ProductModel(images: null, name: null,  price: null, id: null, description: null, type: null),
+              );
+              return CartCard(
+                shoppingCart: cartItem,
+                product: product,
+              );
+            },
+        ),
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           MainButton(onPressed: () async{
-            print('teste');
+            print('PROCEED TO CHECKOUT');
             shoppingCartController.loadShoppingCart(userModel: userController.userModel);
           } , title: "PROCEED TO CHECKOUT"),
         ],

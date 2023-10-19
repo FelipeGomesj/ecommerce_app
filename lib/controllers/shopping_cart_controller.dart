@@ -17,8 +17,24 @@ class ShoppingCartController extends ChangeNotifier {
   set shoppingCartList(List<ShoppingCartModel>? value){
     shoppingCartList = value;
     notifyListeners();
+    print('passou no set shoppingCartList');
   }
+
+  // bool _cartChanged = false;
+  // bool get cartChanged => _cartChanged;
+  //
+  // set cartChanged(bool value){
+  //   cartChanged = value;
+  //   notifyListeners();
+  //   print("cartChanged");
+  // }
+
+  // void notifyCartChanged() {
+  //   _cartChanged = true;
+  //   notifyListeners();
+  // }
   Future<void> loadShoppingCart({UserModel? userModel}) async {
+    print('userModel: ${userModel?.id}');
     if (userModel?.id != null && userModel?.id != '') {
       try {
         final QuerySnapshot shoppingCartQuery = await firestore.collection('users').doc(userModel?.id).collection('user_cart').get();
@@ -66,6 +82,7 @@ class ShoppingCartController extends ChangeNotifier {
       final ShoppingCartModel shoppingCartItem = ShoppingCartModel(id: null, productId: product.id, unitProductPrice: product.price, amount: amount);
       _shoppingCartList.add(shoppingCartItem);
     }
+    notifyListeners();
   }
 
   Future<void> removeProductToCart({required String productId}) async {

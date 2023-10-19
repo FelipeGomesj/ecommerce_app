@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
           lazy:false
         ),
         ChangeNotifierProvider(create: (_) => ShoppingCartController(),
-          lazy: true,
         )
       ],
       child: I18n(

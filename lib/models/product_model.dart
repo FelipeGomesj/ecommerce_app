@@ -20,6 +20,7 @@ class ProductModel {
   String? status;
   String? type;
   bool isFavorite = false;
+
   factory ProductModel.fromDocument(DocumentSnapshot doc) {
     return ProductModel(
         id: doc.id,

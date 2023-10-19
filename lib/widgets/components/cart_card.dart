@@ -22,11 +22,15 @@ class _CartCardState extends State<CartCard> {
   final ValueNotifier<int> _countNotifier = ValueNotifier<int>(0);
   final ValueNotifier<num> _productPriceSum = ValueNotifier<num>(0);
 
+  @override
+  void initState() {
+    super.initState();
+    _countNotifier.value = widget.shoppingCart.amount!;
+    _productPriceSum.value = widget.shoppingCart.unitProductPrice!;
+  }
 
   @override
   Widget build(BuildContext context) {
-    _countNotifier.value = widget.shoppingCart.amount!;
-    _productPriceSum.value = widget.shoppingCart.unitProductPrice!;
     return Consumer<ShoppingCartController>(
       builder: (_, shoppingCartController, __) => Container(
         margin: const EdgeInsets.only(bottom: 14),
@@ -116,7 +120,6 @@ class _CartCardState extends State<CartCard> {
                                               _productPriceSum.value -=
                                                   widget.product.price!;
                                               shoppingCartController.removeProductToCart(productId: widget.product.id!);
-                                              shoppingCartController.notifyListeners();
                                             },
                                             onLongPress: () {
                                               while (_countNotifier.value > 1) {
@@ -127,8 +130,6 @@ class _CartCardState extends State<CartCard> {
                                                     .removeProductToCart(
                                                         productId:
                                                             widget.product.id!);
-                                                shoppingCartController
-                                                    .notifyListeners();
                                               }
                                             },
                                             child: const Padding(
@@ -333,7 +334,6 @@ class _CartCardState extends State<CartCard> {
                                             widget.product.price!;
                                         //print('_countNotifier.value: ${_countNotifier.value}');
                                         shoppingCartController.addProductToCart(product: widget.product, amount: _countNotifier.value);
-                                        shoppingCartController.notifyListeners();
                                       },
                                       child: const Padding(
                                         padding: EdgeInsets.only(
