@@ -347,7 +347,9 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                         shoppingCartController.addProductToCart(
                             product: widget.productModel,
                             amount: _countNotifier.value);
-                        print('adicionar para o carrinho');
+                        //até aqui ok.
+                        //print(_countNotifier.value);
+                        print('adicionar para o carrinhoooooooooooo');
                       },
                       child: Text(
                         "Adicionar P/ carrinho".i18n,

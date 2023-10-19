@@ -67,7 +67,8 @@ class ShoppingCartController extends ChangeNotifier {
     try{
       _shoppingCartList.firstWhere((item) {
         if(product.id == item.productId){
-          item.amount = item.amount! + 1;
+          //item.amount = item.amount! + 1;
+          item.amount = amount;
           alreadyInCart = true;
           return alreadyInCart;
         }else{

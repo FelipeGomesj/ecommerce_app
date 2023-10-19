@@ -59,7 +59,7 @@ class _CartViewState extends State<CartView> {
       body: WillPopScope(
         onWillPop:() async {
           if (widget.onReturnAction != null) {
-            print("cart_view: widget.onReturnAction");
+            //print("cart_view: widget.onReturnAction");
             widget.onReturnAction!();
           }
           return true;
