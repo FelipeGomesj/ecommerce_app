@@ -61,7 +61,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => CartView(
-                      onReturnAction: () => callInitSateOnReturn(),
+                      onReturnAction: () => callInitStateOnReturn(),
                     ),
                   ),
                 ),
@@ -333,23 +333,45 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                     padding: const EdgeInsets.only(left: 16),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(0),
-                          side: MaterialStateProperty.all(
-                              const BorderSide(color: Colors.red, width: 2.5)),
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),),
-                      //TODO: fazer a adição do produto e suas quantidades quando clicar no botão add to cart na tela products_details_view.dart
+                        elevation: MaterialStateProperty.all(0),
+                        side: MaterialStateProperty.all(
+                            const BorderSide(color: Colors.red, width: 2.5)),
+                        backgroundColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.white),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
+                        ),
+                      ),
                       onPressed: () {
                         shoppingCartController.addProductToCart(
                             product: widget.productModel,
                             amount: _countNotifier.value);
-                        //até aqui ok.
-                        //print(_countNotifier.value);
-                        print('adicionar para o carrinhoooooooooooo');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green,
+                            content: RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        "${widget.productModel.name} adicionado no seu ",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Carrinho",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
                       },
                       child: Text(
                         "Adicionar P/ carrinho".i18n,
@@ -416,7 +438,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
   }
 
   //Essa função irá dar um pop na screen que irá chamar (neste caso na cart_view), e chamar o iniState desta própria screen
-  void callInitSateOnReturn() {
+  void callInitStateOnReturn() {
     Navigator.pop(context);
     initState();
   }

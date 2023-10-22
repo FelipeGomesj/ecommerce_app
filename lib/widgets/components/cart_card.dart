@@ -83,293 +83,300 @@ class _CartCardState extends State<CartCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            widget.product.name!,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 18),
-                          ),
-                          ValueListenableBuilder<int>(
-                            valueListenable: _countNotifier,
-                            builder: (context, sum, child) => Row(
-                              //mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 0, right: 8),
-                                  child: SizedBox(
-                                    width: 38,
-                                    height: 30,
-                                    child: _countNotifier.value > 1
-                                        ? ElevatedButton(
-                                            style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.product.name!,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 18),
+                            ),
+                            ValueListenableBuilder<int>(
+                              valueListenable: _countNotifier,
+                              builder: (context, sum, child) => Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 0, right: 8),
+                                    child: SizedBox(
+                                      width: 38,
+                                      height: 30,
+                                      child: _countNotifier.value > 1
+                                          ? ElevatedButton(
+                                              style: ButtonStyle(
+                                                shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(20),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            onPressed: () {
-                                              if (_countNotifier.value <= 1) {
-                                                _countNotifier.value += 1;
-                                              }
-                                              _countNotifier.value -= 1;
-                                              _productPriceSum.value -=
-                                                  widget.product.price!;
-                                              shoppingCartController.removeProductToCart(productId: widget.product.id!);
-                                            },
-                                            onLongPress: () {
-                                              while (_countNotifier.value > 1) {
+                                              onPressed: () {
+                                                if (_countNotifier.value <= 1) {
+                                                  _countNotifier.value += 1;
+                                                }
                                                 _countNotifier.value -= 1;
                                                 _productPriceSum.value -=
                                                     widget.product.price!;
-                                                shoppingCartController
-                                                    .removeProductToCart(
-                                                        productId:
-                                                            widget.product.id!);
-                                              }
-                                            },
-                                            child: const Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 0, right: 1),
-                                              child: Text(
-                                                "-",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          )
-                                        //botão remover item
-                                        : ElevatedButton(
-                                            style: ButtonStyle(
-                                              shadowColor: MaterialStateColor
-                                                  .resolveWith((states) =>
-                                                      Colors.transparent),
-                                              overlayColor: MaterialStateColor
-                                                  .resolveWith((states) =>
-                                                      Colors.transparent),
-                                              shape: MaterialStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
+                                                shoppingCartController.removeProductToCart(productId: widget.product.id!);
+                                              },
+                                              onLongPress: () {
+                                                while (_countNotifier.value > 1) {
+                                                  _countNotifier.value -= 1;
+                                                  _productPriceSum.value -=
+                                                      widget.product.price!;
+                                                  shoppingCartController
+                                                      .removeProductToCart(
+                                                          productId:
+                                                              widget.product.id!);
+                                                }
+                                              },
+                                              child: const Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0, right: 1),
+                                                child: Text(
+                                                  "-",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: 20),
                                                 ),
                                               ),
-                                              backgroundColor:
-                                                  MaterialStateColor
-                                                      //Colors.red.withAlpha(180)
-                                                      .resolveWith((states) =>
-                                                          Colors.grey),
-                                            ),
-                                            onPressed: () => showDialog(
-                                              context: context,
-                                              builder: (context) => Center(
-                                                child: Card(
-                                                  color: Colors.white,
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 16),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
+                                            )
+                                          //botão remover item
+                                          : ElevatedButton(
+                                              style: ButtonStyle(
+                                                shadowColor: MaterialStateColor
+                                                    .resolveWith((states) =>
+                                                        Colors.transparent),
+                                                overlayColor: MaterialStateColor
+                                                    .resolveWith((states) =>
+                                                        Colors.transparent),
+                                                shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(20),
+                                                  ),
+                                                ),
+                                                backgroundColor:
+                                                    MaterialStateColor
+                                                        //Colors.red.withAlpha(180)
+                                                        .resolveWith((states) =>
+                                                            Colors.grey),
+                                              ),
+                                              onPressed: () => showDialog(
+                                                context: context,
+                                                builder: (context) => Center(
+                                                  child: Card(
+                                                    color: Colors.white,
+                                                    margin: const EdgeInsets
                                                             .symmetric(
-                                                        vertical: 24),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        RichText(
-                                                          text: TextSpan(
-                                                              children: [
-                                                                const TextSpan(
-                                                                  text:
-                                                                      "Remover ",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          18),
-                                                                ),
-                                                                TextSpan(
-                                                                  text: widget
-                                                                      .product
-                                                                      .name,
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: CustomColors
-                                                                          .orangeTitle,
-                                                                      fontSize:
-                                                                          18),
-                                                                ),
-                                                                const TextSpan(
-                                                                  text:
-                                                                      " do carrinho ? ",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          18),
-                                                                ),
-                                                              ]),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 32),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            children: [
-                                                              TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  await shoppingCartController.removeProductToCart(
-                                                                      productId: widget
-                                                                          .product
-                                                                          .id!);
-                                                                  print(
-                                                                      'Removendo ${widget.product.name}');
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                  "Remover",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        18,
-                                                                    color: Colors
-                                                                        .red,
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline,
-                                                                    decorationColor:
-                                                                        Colors
-                                                                            .red,
+                                                        horizontal: 16),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 24),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          RichText(
+                                                            text: TextSpan(
+                                                                children: [
+                                                                  const TextSpan(
+                                                                    text:
+                                                                        "Remover ",
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            18),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () =>
+                                                                  TextSpan(
+                                                                    text: widget
+                                                                        .product
+                                                                        .name,
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: CustomColors
+                                                                            .orangeTitle,
+                                                                        fontSize:
+                                                                            18),
+                                                                  ),
+                                                                  const TextSpan(
+                                                                    text:
+                                                                        " do carrinho ? ",
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            18),
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical: 32),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    await shoppingCartController.removeProductToCart(
+                                                                        productId: widget
+                                                                            .product
+                                                                            .id!);
+                                                                    print(
+                                                                        'Removendo ${widget.product.name}');
                                                                     Navigator.of(
                                                                             context)
-                                                                        .pop(),
-                                                                child: Text(
-                                                                  "Voltar para o carrinho",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        18,
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade700,
+                                                                        .pop();
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "Remover",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          18,
+                                                                      color: Colors
+                                                                          .red,
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .underline,
+                                                                      decorationColor:
+                                                                          Colors
+                                                                              .red,
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop(),
+                                                                  child: Text(
+                                                                    "Voltar para o carrinho",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          18,
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade700,
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 0,
-                                                  right: 0,
-                                                  top: 0,
-                                                  bottom: 2),
-                                              child: Text(
-                                                "x",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    //color: Colors.white.withAlpha(80),
-                                                    color: Colors.white,
-                                                    fontSize: 16),
+                                              child: const Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0,
+                                                    right: 0,
+                                                    top: 0,
+                                                    bottom: 2),
+                                                child: Text(
+                                                  "x",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      //color: Colors.white.withAlpha(80),
+                                                      color: Colors.white,
+                                                      fontSize: 16),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "${_countNotifier.value}",
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: SizedBox(
-                                    width: 39,
-                                    height: 30,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                  Text(
+                                    "${_countNotifier.value}",
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: SizedBox(
+                                      width: 39,
+                                      height: 30,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        _countNotifier.value += 1;
-                                        _productPriceSum.value =
-                                            widget.product.price!;
-                                        //print('_countNotifier.value: ${_countNotifier.value}');
-                                        shoppingCartController.addProductToCart(product: widget.product, amount: _countNotifier.value);
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 0,
-                                            right: 0,
-                                            top: 0,
-                                            bottom: 0),
-                                        child: Text(
-                                          "+",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 18),
+                                        onPressed: () {
+                                          _countNotifier.value += 1;
+                                          _productPriceSum.value =
+                                              widget.product.price!;
+                                          //print('_countNotifier.value: ${_countNotifier.value}');
+                                          shoppingCartController.addProductToCart(product: widget.product, amount: _countNotifier.value);
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 0,
+                                              right: 0,
+                                              top: 0,
+                                              bottom: 0),
+                                          child: Text(
+                                            "+",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          widget.product.isFavorite == false
-                              ? InkWell(
-                                  onTap: () => print(
-                                      'adicionar produto para o favorito'),
-                                  child: const Text(
-                                    "Add to favorite",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                )
-                              : Container(),
-                        ],
+                            widget.product.isFavorite == false
+                                ? InkWell(
+                                    onTap: () => print(
+                                        'adicionar produto para o favorito'),
+                                    child: const Text(
+                                      "Add to favorite",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
                       ),
-                      Text(
-                        formatPrice(widget.shoppingCart.totalProductPrice),
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          formatPrice(widget.shoppingCart.totalProductPrice),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
                   ),

@@ -1,6 +1,8 @@
 import 'package:ecommerce_app/tools/custom_sized_box.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../configs/my_app_navigator_key.dart';
 import '../../constants/constants.dart';
 import '../../controllers/shopping_cart_controller.dart';
 import '../../models/product_model.dart';
@@ -18,20 +20,17 @@ class ProductGrid extends StatelessWidget {
     return Consumer<ShoppingCartController>(
       builder: (_, shoppingCartController, __) => GestureDetector(
         onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) {
-              try{
-                return ProductsDetailsScreen(
-                  productModel: productModel,
-                  shoppingCart: shoppingCartController.shoppingCartList.firstWhere((item) => item.productId == productModel.id),
-                );
-
-              }catch(e){
-                return ProductsDetailsScreen(productModel: productModel);
-
-              }
+          MaterialPageRoute(builder: (_) {
+            try {
+              return ProductsDetailsScreen(
+                productModel: productModel,
+                shoppingCart: shoppingCartController.shoppingCartList
+                    .firstWhere((item) => item.productId == productModel.id),
+              );
+            } catch (e) {
+              return ProductsDetailsScreen(productModel: productModel);
             }
-          ),
+          }),
         ),
         child: Card(
           //color: Colors.red.shade50,
@@ -100,6 +99,34 @@ class ProductGrid extends StatelessWidget {
                                 onPressed: () {
                                   shoppingCartController.addProductToCart(
                                       product: productModel, amount: 1);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: RichText(
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: "${productModel.name} adicionado no seu ",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: "Carrinho",
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                decoration: TextDecoration.underline,
+                                                decorationColor: Colors.white,
+                                              ),
+                                              recognizer: TapGestureRecognizer()..onTap = () => MyAppNavigatorKey.globalKey.currentState?.pushNamed('/cart'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
                                   Navigator.pop(context);
                                 },
                                 child: Text(
