@@ -318,7 +318,8 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                               ),
                               const Spacer(),
                               Text(
-                                formatPrice(_productPriceSum.value),
+                                //formatPrice(_productPriceSum.value),
+                                formatPrice(widget.productModel.price! * _countNotifier.value),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500, fontSize: 20),
                               )

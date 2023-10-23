@@ -14,27 +14,15 @@ class ShoppingCartController extends ChangeNotifier {
   List<ShoppingCartModel> _shoppingCartList = [];
 
   List<ShoppingCartModel> get shoppingCartList => _shoppingCartList;
+  ShoppingCartModel cartModel = ShoppingCartModel(id: null, productId: null, unitProductPrice: null, amount: null);
   set shoppingCartList(List<ShoppingCartModel>? value){
     shoppingCartList = value;
     notifyListeners();
-    print('passou no set shoppingCartList');
+    print('ShoppingCartController: passou no set shoppingCartList');
   }
 
-  // bool _cartChanged = false;
-  // bool get cartChanged => _cartChanged;
-  //
-  // set cartChanged(bool value){
-  //   cartChanged = value;
-  //   notifyListeners();
-  //   print("cartChanged");
-  // }
-
-  // void notifyCartChanged() {
-  //   _cartChanged = true;
-  //   notifyListeners();
-  // }
   Future<void> loadShoppingCart({UserModel? userModel}) async {
-    print('userModel: ${userModel?.id}');
+    print('ShoppingCartController: userModel: ${userModel?.id}');
     if (userModel?.id != null && userModel?.id != '') {
       try {
         final QuerySnapshot shoppingCartQuery = await firestore.collection('users').doc(userModel?.id).collection('user_cart').get();
@@ -54,11 +42,11 @@ class ShoppingCartController extends ChangeNotifier {
           }
         }
       } catch (e) {
-        print('ERROR AO CONSULTAR CARRINHO: $e');
-        print('_shoppingCartList.length: ${_shoppingCartList.length}');
+        print('ShoppingCartController: ERROR AO CONSULTAR CARRINHO: $e');
+        //print('ShoppingCartController: _shoppingCartList.length: ${_shoppingCartList.length}');
       }
     }
-    print("shoppingCartList: ${shoppingCartList.length}");
+    //print("ShoppingCartController: shoppingCartList: ${shoppingCartList.length}");
     notifyListeners();
   }
 
@@ -67,7 +55,6 @@ class ShoppingCartController extends ChangeNotifier {
     try{
       _shoppingCartList.firstWhere((item) {
         if(product.id == item.productId){
-          //item.amount = item.amount! + 1;
           item.amount = amount;
           alreadyInCart = true;
           return alreadyInCart;
@@ -83,22 +70,24 @@ class ShoppingCartController extends ChangeNotifier {
       final ShoppingCartModel shoppingCartItem = ShoppingCartModel(id: null, productId: product.id, unitProductPrice: product.price, amount: amount);
       _shoppingCartList.add(shoppingCartItem);
     }
+    totalPriceCart();
     notifyListeners();
   }
 
   Future<void> removeProductToCart({required String productId}) async {
     _shoppingCartList.removeWhere((item){
       if(item.productId == productId && item.amount == 1){
-        print('removeu o produto pq só tinha 1 unidade dele');
+        //print('ShoppingCartController: removeu o produto pq só tinha 1 unidade dele');
         return true;
       }else{
         if(item.productId == productId){
           item.amount = item.amount! - 1;
         }
-        print('decrementou uma unidade');
+        //print('ShoppingCartController: decrementou uma unidade');
         return false;
       }
     });
+    totalPriceCart();
     notifyListeners();
   }
 
@@ -106,5 +95,24 @@ class ShoppingCartController extends ChangeNotifier {
   _shoppingCartList = [];
   notifyListeners();
 }
-
+// void totalPriceCart (num price, ShoppingCartModel cartModel){
+//   num precoTotalCarrinho = 0;
+//   for(num precoTotal in shoppingCartList.map((e) => e.totalProductPrice)){
+//     precoTotalCarrinho += precoTotal;
+//     cartModel.totalPriceOfCart = precoTotal;
+//     print(cartModel.totalPriceOfCart);
+//   }
+//   notifyListeners();
+// }
+  void totalPriceCart() {
+    num totalPrice = 0;
+    for (ShoppingCartModel cartItem in _shoppingCartList) {
+      totalPrice += cartItem.totalProductPrice;
+    }
+    cartModel.totalPriceOfCart = totalPrice;
+    print('cartModel.totalPriceOfCart: ${cartModel.totalPriceOfCart}');
+    Future.microtask(() {
+      notifyListeners();
+    });
+  }
 }
