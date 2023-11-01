@@ -83,30 +83,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const Spacer(),
                           InkWell(
-                              onTap: () async{
-                                await userController.signOutUser(userModel: userController.userModel);
-                                userController.userModel = null;
-                              },
+                            onTap: () async {
+                              await userController.signOutUser(
+                                  userModel: userController.userModel);
+                              userController.userModel = null;
+                            },
                             child: const Row(
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(right: 8),
                                   child: Text(
-                                    "Log Out",
+                                    "Logout",
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
-                                 Padding(
+                                Padding(
                                   padding: EdgeInsets.only(right: 8),
                                   child: Icon(
                                     Icons.logout,
                                     color: Colors.red,
                                   ),
                                 )
-
                               ],
                             ),
-                          ),],
+                          ),
+                        ],
                       )
                     : Padding(
                         padding: const EdgeInsets.only(right: 8),
@@ -120,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Text(
-                                  "Login In",
+                                  "Login",
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 8.wd,
@@ -189,9 +190,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           final imageUrl =
                               categoryImagesList.map((e) => e.image).toList();
                           return CategoryCards(imageUrl[index]!, () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) =>
-                                    CategoryScreen(categoryImagesList[index])));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => CategoryScreen(categoryImagesList[index]),
+                              ),
+                            );
                           });
                         },
                       ),

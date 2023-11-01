@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../configs/my_app_navigator_key.dart';
 import '../../constants/constants.dart';
 import '../../controllers/shopping_cart_controller.dart';
+import '../../controllers/user_controller.dart';
 import '../../models/product_model.dart';
 import '../../views/products/products_details_view.dart';
 import '../../tools/i18n_extension/product_grid_i18n.dart';
@@ -17,8 +18,8 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //String formattedPrice = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2).format(productModel.price);
-    return Consumer<ShoppingCartController>(
-      builder: (_, shoppingCartController, __) => GestureDetector(
+    return Consumer2<ShoppingCartController, UserController>(
+      builder: (BuildContext context, shoppingCartController,userController, Widget? child) => GestureDetector(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) {
             try {
@@ -68,9 +69,8 @@ class ProductGrid extends StatelessWidget {
               ),
               12.hg,
               InkWell(
-                overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.white),
-                onTap: () => showDialog<String>(
+                overlayColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                onTap: () => userController.userModel != null ? showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: Padding(
@@ -152,7 +152,7 @@ class ProductGrid extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ) : Navigator.of(context).pushNamed('/pre_login'),
                 child: Container(
                   color: Colors.red,
                   width: 100,

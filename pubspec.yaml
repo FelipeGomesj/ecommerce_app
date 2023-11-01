@@ -72,6 +72,7 @@ flutter:
      - assets/images/pre_login.png
      - assets/images/google-icon.png
      - assets/images/sad-fast-food.jpg
+     - assets/gifs/empty_cart.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

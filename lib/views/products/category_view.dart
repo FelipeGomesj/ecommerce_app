@@ -6,6 +6,7 @@ import 'package:ecommerce_app/tools/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/product_controller.dart';
+import '../../controllers/user_controller.dart';
 import '../../widgets/components/product_grid.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -24,8 +25,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     _category = widget.categoryImagesModel.category!;
     double _height = MediaQuery.of(context).size.height;
-    return Consumer<ProductController>(
-      builder: (BuildContext context, productController, Widget? child) =>
+    return Consumer2<ProductController, UserController>(
+      builder: (BuildContext context, productController, userController, Widget? child) =>
           Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -52,7 +53,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
           ),
           actions: [
-            Padding(
+            userController.userModel != null ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: InkWell(
                 onTap: () => Navigator.of(context).push(
@@ -66,7 +67,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   color: Colors.black,
                 ),
               ),
-            )
+            ) : Container()
           ],
         ),
         body: productController.listCategoryProducts(_category).isEmpty

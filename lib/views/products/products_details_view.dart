@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../configs/customColors.dart';
 import '../../constants/constants.dart';
 import '../../controllers/shopping_cart_controller.dart';
+import '../../controllers/user_controller.dart';
 import '../../models/shopping_cart_model.dart';
 import '../../tools/i18n_extension/product_details_i18n.dart';
 
@@ -48,14 +49,13 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<bool> _isFavorite =
-        ValueNotifier<bool>(widget.productModel.isFavorite);
-    return Consumer<ShoppingCartController>(
-      builder: (_, shoppingCartController, __) => Scaffold(
+    final ValueNotifier<bool> _isFavorite = ValueNotifier<bool>(widget.productModel.isFavorite);
+    return Consumer2<ShoppingCartController, UserController>(
+      builder: (BuildContext context, shoppingCartController, userController, Widget? child) => Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           actions: [
-            Padding(
+            userController.userModel != null ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: InkWell(
                 onTap: () => Navigator.of(context).push(
@@ -71,7 +71,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                   color: Colors.black,
                 ),
               ),
-            )
+            ) : Container()
           ],
         ),
         body: SingleChildScrollView(
@@ -130,8 +130,7 @@ class _ProductsDetailsScreenState extends State<ProductsDetailsScreen>
                               child: InkWell(
                                 onTap: () {
                                   _isFavorite.value = !_isFavorite.value;
-                                  widget.productModel.isFavorite =
-                                      _isFavorite.value;
+                                  widget.productModel.isFavorite = _isFavorite.value;
                                 },
                                 child: _isFavorite.value
                                     ? const Icon(Icons.favorite)

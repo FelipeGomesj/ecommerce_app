@@ -95,22 +95,14 @@ class ShoppingCartController extends ChangeNotifier {
   _shoppingCartList = [];
   notifyListeners();
 }
-// void totalPriceCart (num price, ShoppingCartModel cartModel){
-//   num precoTotalCarrinho = 0;
-//   for(num precoTotal in shoppingCartList.map((e) => e.totalProductPrice)){
-//     precoTotalCarrinho += precoTotal;
-//     cartModel.totalPriceOfCart = precoTotal;
-//     print(cartModel.totalPriceOfCart);
-//   }
-//   notifyListeners();
-// }
+
   void totalPriceCart() {
     num totalPrice = 0;
     for (ShoppingCartModel cartItem in _shoppingCartList) {
       totalPrice += cartItem.totalProductPrice;
     }
     cartModel.totalPriceOfCart = totalPrice;
-    print('cartModel.totalPriceOfCart: ${cartModel.totalPriceOfCart}');
+    //print('cartModel.totalPriceOfCart: ${cartModel.totalPriceOfCart}');
     Future.microtask(() {
       notifyListeners();
     });

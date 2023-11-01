@@ -11,14 +11,14 @@ class UserController extends ChangeNotifier {
     _loadCurrentUser();
   }
 
-  UserModel? userModel = UserModel();
+  UserModel? userModel;
   ShoppingCartController shoppingCartController = ShoppingCartController();
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   bool _loading = false;
-  bool _loaded = false;
+  //bool _loaded = false; carregado...
 
   bool get loading => _loading;
   set loading(bool value){
@@ -37,6 +37,7 @@ class UserController extends ChangeNotifier {
     print("firebaseCurrentUser.email: ${firebaseCurrentUser?.email} ");
 }
 
+//loga
   Future<void> signIn({required UserModel userModel, required Function onFail, required Function onSuccess}) async{
     loading = true;
     try{
@@ -47,8 +48,8 @@ class UserController extends ChangeNotifier {
       onFail(getErrorString(e.code));
     }
     loading = false;
-    _loaded = true;
   }
+  //cria conta
   Future<void> signUp({required UserModel userModel, required Function onFail, required Function onSuccess}) async{
     loading = true;
     try{
@@ -61,7 +62,7 @@ class UserController extends ChangeNotifier {
       await onFail(getErrorString(e.code));
     }
     loading = false; //carregando...
-    _loaded = true; //carregado.
+    //_loaded = true; //carregado.
   }
 
   Future<void> signOutUser({required UserModel? userModel})async{
@@ -73,7 +74,6 @@ class UserController extends ChangeNotifier {
     }catch(e){
       print('UserController SignOutUser: deu ruim: $e');
     }
-    _loaded = false;
     _loading = false;
     notifyListeners();
   }

@@ -29,7 +29,7 @@ class _CartViewState extends State<CartView> {
     //double _height = MediaQuery.of(context).size.height;
     return Consumer3<ProductController, ShoppingCartController, UserController>(
       builder: (BuildContext context, productController, shoppingCartController,
-              userController, Widget? child){
+          userController, Widget? child) {
         //shoppingCartController.totalPriceCart();
         return Scaffold(
           appBar: AppBar(
@@ -69,40 +69,61 @@ class _CartViewState extends State<CartView> {
               }
               return true;
             },
-            child: ListView.builder(
-              itemCount: shoppingCartController.shoppingCartList.length,
-              //productList.length,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              //itemExtent: 200,
-              itemBuilder: (context, index) {
-                ShoppingCartModel cartModel = shoppingCartController.shoppingCartList[index];
-                //num precoTotalCarrinho = 0;
-                // for(num precoTotal in shoppingCartController.shoppingCartList.map((e) => e.totalProductPrice)){
-                //   precoTotalCarrinho += precoTotal;
-                //   cartModel.totalPriceOfCart = precoTotalCarrinho;
-                // }
-                //shoppingCartController.totalPriceCart();
-                // Future.microtask(() {
-                //   shoppingCartController.notifyListeners();
-                // });
-                // print("cartModel.totalPriceOfCart: ${cartModel.totalPriceOfCart}");
-                // Encontrando o produto correspondente na lista de produtos
-                final product = productController.products.firstWhere(
-                      (product) => product.id == cartModel.productId,
-                  orElse: () => ProductModel(
-                      images: null,
-                      name: null,
-                      price: null,
-                      id: null,
-                      description: null,
-                      type: null),
-                );
-                return CartCard(
-                  shoppingCart: cartModel,
-                  product: product,
-                );
-              },
-            ),
+            child: shoppingCartController.shoppingCartList.length == 0 &&
+                    userController.userModel != null
+                ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset('assets/gifs/empty_cart.gif', height: MediaQuery.of(context).size.height * 0.3),
+                         const Text(
+                           textAlign: TextAlign.center,
+                          "Oh, não...\nSeu carrinho ainda está vazio",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 18),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pushNamed('/home'),
+                            child: const Text(
+                              "Ir para produtos",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                decorationColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: shoppingCartController.shoppingCartList.length,
+                    //productList.length,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    //itemExtent: 200,
+                    itemBuilder: (context, index) {
+                      ShoppingCartModel cartModel =
+                          shoppingCartController.shoppingCartList[index];
+                      final product = productController.products.firstWhere(
+                        (product) => product.id == cartModel.productId,
+                        orElse: () => ProductModel(
+                            images: null,
+                            name: null,
+                            price: null,
+                            id: null,
+                            description: null,
+                            type: null),
+                      );
+                      return CartCard(
+                        shoppingCart: cartModel,
+                        product: product,
+                      );
+                    },
+                  ),
           ),
           bottomNavigationBar: Column(
             mainAxisSize: MainAxisSize.min,
@@ -112,28 +133,29 @@ class _CartViewState extends State<CartView> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
-                    child: shoppingCartController.cartModel.totalPriceOfCart != null ? Text(
-                      'Total: ${formatPrice(shoppingCartController.cartModel.totalPriceOfCart!)}',
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600
-                      ),
-                    ) : Container(),
+                    child: shoppingCartController.shoppingCartList.isNotEmpty
+                        ? Text(
+                            'Total: ${formatPrice(shoppingCartController.cartModel.totalPriceOfCart!)}',
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          )
+                        : Container(),
                   ),
                 ],
               ),
-              MainButton(
-                  onPressed: () async {
-                    print('PROCEED TO CHECKOUT');
-                    shoppingCartController.loadShoppingCart(
-                        userModel: userController.userModel);
-                  },
-                  title: "PROCEED TO CHECKOUT"),
+              shoppingCartController.shoppingCartList.isNotEmpty
+                  ? MainButton(
+                      onPressed: () async {
+                        print('PROCEED TO CHECKOUT');
+                        shoppingCartController.loadShoppingCart(
+                            userModel: userController.userModel);
+                      },
+                      title: "PROCEED TO CHECKOUT")
+                  : Container(),
             ],
           ),
         );
-      }
-,
+      },
     );
   }
 }
